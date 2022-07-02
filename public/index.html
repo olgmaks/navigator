@@ -27,7 +27,7 @@
     Vue.createApp({
         data() {
             return {
-                message: 'Device accelerometer data',
+                message: 'Please allow to use accelerometer',
                 alpha: 0,
                 beta: 0,
                 gamma: 0
@@ -46,16 +46,29 @@
             }
         },
         created: function() {
-            let acl = new Accelerometer({
-                frequency: 60
-            });
-            acl.addEventListener('reading', () => {
-                this.alpha = acl.x;
-                this.beta = acl.y;
-                this.gamma = +acl.z;
-            });
 
-            acl.start();
+            navigator.permissions.query({
+                    name: 'accelerometer'
+                })
+                .then(result => {
+                    if (result.state === 'denied') {
+                        this.message = 'Permission to use accelerometer sensor is denied.';
+                        return;
+                    }
+
+                    this.message = 'Device accelerometer data';
+                    let acl = new Accelerometer({
+                        frequency: 60
+                    });
+                    acl.addEventListener('reading', () => {
+                        this.alpha = acl.x;
+                        this.beta = acl.y;
+                        this.gamma = +acl.z;
+                    });
+
+                    acl.start();
+
+                });
         },
     }).mount('#app');
 </script>
