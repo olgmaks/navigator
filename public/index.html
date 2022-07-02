@@ -47,18 +47,22 @@
         },
         created: function() {
 
-            let acl = new Accelerometer({
-                frequency: 60
-            });
-            acl.addEventListener('reading', () => {
-                this.alpha = acl.x;
-                this.beta = acl.y;
-                this.gamma = acl.z;
+            try {
+                let acl = new Accelerometer({
+                    frequency: 60
+                });
+                acl.addEventListener('reading', () => {
+                    this.alpha = acl.x;
+                    this.beta = acl.y;
+                    this.gamma = acl.z;
 
-                console.log(acl)
-            });
+                    console.log(acl)
+                });
 
-            acl.start();
+                acl.start();
+            } catch (e) {
+                console.log(e);
+            }
 
             window.addEventListener("devicemotion", function() {
                 console.log('devicemotion')
