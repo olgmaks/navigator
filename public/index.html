@@ -46,7 +46,7 @@
             }
         },
         created: function() {
-            window.addEventListener("devicemotion", onOrientationChangedEvent, true);
+            window.addEventListener("devicemotion", this.onOrientationChangedEvent, true);
         },
     }).mount('#app');
 </script>
