@@ -60,6 +60,16 @@
 
             acl.start();
 
+            window.addEventListener("devicemotion", function() {
+                console.log('devicemotion')
+            }, true);
+
+            window.addEventListener("deviceorientation", function() {
+                console.log('deviceorientation')
+            }, true);
+
+
+
 
         },
     }).mount('#app');
