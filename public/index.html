@@ -24,19 +24,6 @@
 </body>
 
 <script>
-    navigator.permissions.query({
-            name: 'accelerometer'
-        })
-        .then(e => {
-            console.log(e);
-        }, result => {
-            if (result.state === 'denied') {
-                console.log('Permission to use accelerometer sensor is denied.');
-                return;
-            }
-
-        });
-
     Vue.createApp({
         data() {
             return {
@@ -59,17 +46,29 @@
             }
         },
         created: function() {
+            navigator.permissions.query({
+                    name: 'accelerometer'
+                })
+                .then(result => {
+                    if (result.state === 'denied') {
+                        console.log('Permission to use accelerometer sensor is denied.');
+                        return;
+                    }
+                    let acl = new Accelerometer({
+                        frequency: 60
+                    });
+                    acl.addEventListener('reading', () => {
+                        this.alpha = acl.x;
+                        this.beta = acl.y;
+                        this.gamma = +acl.z;
+                    });
 
-            let acl = new Accelerometer({
-                frequency: 60
-            });
-            acl.addEventListener('reading', () => {
-                this.alpha = acl.x;
-                this.beta = acl.y;
-                this.gamma = +acl.z;
-            });
+                    acl.start();
+                }).catch(e => {
+                    console.log(e);
+                });
 
-            acl.start();
+
         },
     }).mount('#app');
 </script>
