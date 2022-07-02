@@ -24,8 +24,6 @@
 </body>
 
 <script>
-    console.log(Vue)
-
     Vue.createApp({
         data() {
             return {
@@ -48,7 +46,16 @@
             }
         },
         created: function() {
-            window.addEventListener('deviceorientation', this.onOrientationChangedEvent);
+            let acl = new Accelerometer({
+                frequency: 60
+            });
+            acl.addEventListener('reading', () => {
+                this.alpha = acl.x;
+                this.beta = acl.y;
+                this.gamma = +acl.z;
+            });
+
+            acl.start();
         },
     }).mount('#app');
 </script>
